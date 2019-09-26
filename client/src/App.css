@@ -1,0 +1,11 @@
+.container{
+    padding: 30px 0;
+}
+.title{
+    padding: 20px 0px;
+}
+
+.tableHeader{
+    cursor: pointer;
+    font-size: 13px;
+}
