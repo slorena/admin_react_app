@@ -10,8 +10,28 @@ exports.building_index = function (req, res) {
             res.json(building);
         }
     });
-};
 
+};
+exports.building_geolocation = function (req, res) {
+    Building.find(
+        {
+            'geoLocation':
+            {
+                $near:
+                {
+                    $geometry: { type: "Point", coordinates: [-70.0, 42.0] }
+                }
+            }
+        }, function (err, buildings) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                console.log("Found the following records");
+                res.json(buildings);
+            }
+        });
+}
 exports.building_create = function (req, res) {
     let building = new Building(
         {
@@ -20,7 +40,11 @@ exports.building_create = function (req, res) {
             location: req.body.location,
             type: req.body.type,
             price: req.body.price,
-            currency: req.body.currency
+            currency: req.body.currency,
+            geoLocation: {
+                'type': "Point",
+                coordinates: [req.body.geoLocationCoord.lng, req.body.geoLocationCoord.lat]
+            }
         }
     );
 

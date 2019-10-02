@@ -16,16 +16,23 @@ app.use(
 app.use(bodyParser.json());
 
 // DB Config
-const db = require("./config/keys").mongoURI;
+const dbURL = require("./config/keys").mongoURI;
 
 // Connect to MongoDB
-mongoose
-  .connect(
-    db,
-    { useNewUrlParser: true }
-  )
-  .then(() => console.log("MongoDB successfully connected"))
+mongoose.connect(dbURL, function (err, db) {
+  if (err) throw err;
+
+  console.log("MongoDB successfully connected");
+
+  var collection = db.collection('buildings');
+  // Create the index
+  collection.createIndex({ geoLocation: "2dsphere" }, function(err, result) {
+    console.log(result);
+  });
+
+})
   .catch(err => console.log(err));
+
 
 
 // Routes

@@ -9,7 +9,16 @@ let BuildingSchema = new Schema({
     type: { type: String, required: true, max: 500 },
     price: { type: Number, required: false },
     currency: { type: String, required: false, max: 10 },
-    image: { data: Buffer, contentType: String }
+    image: { data: Buffer, contentType: String },
+    geoLocation: {
+        'type': {
+            type: String,
+            required: true,
+            enum: ['Point', 'LineString', 'Polygon'],
+            default: 'Point'
+        },
+        coordinates: []
+    }
 });
 
 

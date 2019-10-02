@@ -2,12 +2,15 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
+
+import LocationSearchInput from '../map/LocationSearchInput';
 const validateBuildingInput = require("../../validation/building.validation");
 
 export default class Create extends Component {
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.onChangeLocation = this.onChangeLocation.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
@@ -17,6 +20,7 @@ export default class Create extends Component {
             building_type: '',
             building_price: '',
             building_currency: '',
+            building_geoLocation: {},
             errors: {}
         }
     }
@@ -26,7 +30,12 @@ export default class Create extends Component {
             [e.target.name]: e.target.value
         })
     }
-
+    onChangeLocation(geoPoint, address) {
+        this.setState({
+            building_geoLocation: geoPoint,
+            building_location: address
+        })
+    }
     onSubmit(e) {
         e.preventDefault();
 
@@ -36,7 +45,8 @@ export default class Create extends Component {
             location: this.state.building_location,
             type: this.state.building_type,
             price: this.state.building_price,
-            currency: this.state.building_currency
+            currency: this.state.building_currency,
+            geoLocationCoord: this.state.building_geoLocation
         };
 
         const { errors, isValid } = validateBuildingInput(obj);
@@ -88,14 +98,17 @@ export default class Create extends Component {
                     </div>
                     <div className="form-group">
                         <label>Location: </label>
+                        <LocationSearchInput onChangeLocation={this.onChangeLocation} />
                         <input type="text"
                             className="form-control"
                             value={this.state.building_location}
-                            onChange={this.handleInputChange}
                             name="building_location"
                         />
+
                         <span style={{ color: "red" }}>{this.state.errors["location"]}</span>
                     </div>
+
+
                     <div className="form-group">
                         <label>Type: </label>
                         <input type="text"

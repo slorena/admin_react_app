@@ -11,7 +11,7 @@ export default class Index extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { building: [] };
+        this.state = { buildings: [] };
     }
     componentDidMount() {
         axios.get('/api/building/index')
@@ -30,7 +30,7 @@ export default class Index extends Component {
     }
 
     onSort = (sortedBuildings) => {
-        this.setState({ building: sortedBuildings });
+        this.setState({ buildings: sortedBuildings });
     }
 
     render() {

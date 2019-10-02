@@ -21,7 +21,7 @@ class TableHeadComponent extends Component {
 
     updateSortBy(sortBy) {
         // multiple clicks on the same column reverse the sort order
-        if (sortBy == this.state.sortBy) {
+        if (sortBy === this.state.sortBy) {
             this.props.onSort && this.props.onSort([...this.props.obj.reverse()]);
             return;
         }
@@ -47,7 +47,7 @@ class TableHeadComponent extends Component {
                 key={h.key}
                 name={h.name}
                 onClicked={() => this.updateSortBy(h.key)}
-                isSortColumn={this.state.sortBy == h.key} />
+                isSortColumn={this.state.sortBy === h.key} />
         });
         return <TableRow>{header}</TableRow>;
     }
