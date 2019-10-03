@@ -91,9 +91,9 @@ export default class Create extends Component {
                         <label>Description: </label>
                         <input type="text"
                             className="form-control"
-                            value={this.state.business_description}
+                            value={this.state.building_description}
                             onChange={this.handleInputChange}
-                            name="business_description"
+                            name="building_description"
                         />
                     </div>
                     <div className="form-group">

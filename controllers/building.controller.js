@@ -22,13 +22,9 @@ exports.building_geolocation = function (req, res) {
                     $geometry: { type: "Point", coordinates: [-70.0, 42.0] }
                 }
             }
-        }, function (err, buildings) {
+        }, function (err) {
             if (err) {
                 console.log(err);
-            }
-            else {
-                console.log("Found the following records");
-                res.json(buildings);
             }
         });
 }

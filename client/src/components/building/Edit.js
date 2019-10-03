@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
+import SuccessComponent from '../handlingMessages/SuccessComponent';
 
 export default class Edit extends Component {
     constructor(props) {
@@ -15,10 +16,12 @@ export default class Edit extends Component {
             building_location: '',
             building_type: '',
             building_price: '',
-            building_currency: ''
+            building_currency: '',
+            success: ''
         }
     }
     componentDidMount() {
+        this.setState({ success: "" });
         axios.get('/api/building/edit/' + this.props.match.params.id)
             .then(response => {
                 this.setState({
@@ -54,12 +57,19 @@ export default class Edit extends Component {
         };
 
         axios.put('/api/building/update/' + this.props.match.params.id, obj)
-            .then(res => console.log(res.data));
+            .then(() => this.setState({ success: "Building information updated." }));
 
         this.props.history.push('/index');
     }
 
     render() {
+        const { success } = this.state;
+
+        if (success) {
+            return (
+                <SuccessComponent error={success} />
+            )
+        }
         return (
             <div class="container">
                 <h3 className="title">View details</h3>
@@ -78,9 +88,9 @@ export default class Edit extends Component {
                         <label>Description: </label>
                         <input type="text"
                             className="form-control"
-                            value={this.state.business_description}
+                            value={this.state.building_description}
                             onChange={this.handleInputChange}
-                            name="business_description"
+                            name="building_description"
                         />
                     </div>
                     <div className="form-group">
@@ -120,7 +130,7 @@ export default class Edit extends Component {
                         />
                     </div>
                     <div className="form-group">
-                        <input type="submit" value="Register Building" className="btn btn-primary" />
+                        <input type="submit" value="Update Building" className="btn btn-primary" />
                     </div>
                 </form>
             </div>

@@ -48,7 +48,6 @@ class MapComponent extends Component {
                     apiKey="API_KEY"
                     center={userLocation}
                     zoom={3}
-                //   onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
                 >
                     {this.getMarkers()}
 

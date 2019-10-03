@@ -6,20 +6,27 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRowComponent from '../layout/TableRowComponent';
 import TableHeadComponent from '../layout/TableHeadComponent';
 import { MuiThemeProvider } from 'material-ui';
+import ErrorComponent from '../handlingMessages/ErrorComponent';
+import LoadingComponent from '../loading/LoadingComponent';
+
 
 export default class Index extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { buildings: [] };
+        this.state = { buildings: [], loading: true, error: '' };
+
     }
     componentDidMount() {
+        // put  component in loading state and clear error, if exists
+        this.setState({ loading: true, error: "" })
+
         axios.get('/api/building/index')
             .then(response => {
-                this.setState({ buildings: response.data });
+                this.setState({ buildings: response.data, loading: false, error: '' });
             })
             .catch(function (error) {
-                console.log(error);
+                this.setState({ buildings: [], loading: false, error: error })
             })
     }
 
@@ -34,6 +41,19 @@ export default class Index extends Component {
     }
 
     render() {
+        const { loading, error } = this.state;
+
+        if (loading) {
+            return (
+                <LoadingComponent />
+            )
+        }
+
+        if (error) {
+            return (
+                <ErrorComponent error={this.state.error} />
+            )
+        }
         return (
             <div className="container">
                 {

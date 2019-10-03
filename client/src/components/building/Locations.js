@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import MapComponent from '../map/MapComponent';
+import ErrorComponent from '../handlingMessages/ErrorComponent';
+import LoadingComponent from '../loading/LoadingComponent';
 
 
 export default class Locations extends Component {
@@ -30,11 +32,17 @@ export default class Locations extends Component {
     render() {
         const { loading, error } = this.state;
 
-        if (loading)
-            return null; // loading component here
+        if (loading) {
+            return (
+                <LoadingComponent />
+            )
+        }
 
-        if (error)
-            return null; // error component here
+        if (error) {
+            return (
+                <ErrorComponent error={error} />
+            )
+        }
 
         return (
             <MapComponent markers={this.state.buildings} />
