@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import Marker from './Marker';
+import Utils from "../../utils.js";
 
 class MapComponent extends Component {
     constructor(props) {
@@ -8,19 +9,16 @@ class MapComponent extends Component {
         this.state = { userLocation: { lat: 32, lng: 32 }, loading: true };
     }
     getUserLocation() {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const { latitude, longitude } = position.coords;
-
-                this.setState({
-                    userLocation: { lat: latitude, lng: longitude },
-                    loading: false
-                });
-            },
-            () => {
+        Utils.getPosition().then((position) => {
+            const { latitude, longitude } = position.coords;
+            this.setState({
+                userLocation: { lat: latitude, lng: longitude },
+                loading: false
+            });
+        })
+            .catch(() => {
                 this.setState({ loading: false });
-            }
-        );
+            });
     }
     componentDidMount() {
         this.getUserLocation()

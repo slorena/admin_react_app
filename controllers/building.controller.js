@@ -19,12 +19,15 @@ exports.building_geolocation = function (req, res) {
             {
                 $near:
                 {
-                    $geometry: { type: "Point", coordinates: [-70.0, 42.0] }
+                    $geometry: { type: "Point", coordinates: [req.query.lng, req.query.lat] }
                 }
             }
-        }, function (err) {
+        }, function (err, buildings) {
             if (err) {
                 console.log(err);
+            }
+            else {
+                res.json(buildings);
             }
         });
 }

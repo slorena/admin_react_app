@@ -3,28 +3,37 @@ import axios from 'axios';
 import MapComponent from '../map/MapComponent';
 import ErrorComponent from '../handlingMessages/ErrorComponent';
 import LoadingComponent from '../loading/LoadingComponent';
-
+import Utils from "../../utils.js";
 
 export default class Locations extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { buildings: [], loading: true, error: '' };
+        this.state = { buildings: [], userLocation: { lat: 32, lng: 32 }, loading: true, error: '' };
     }
 
     componentDidMount() {
-        this.fetchBuildings();
+        this.getUserLocation(this.fetchBuildings);
     }
-
-    fetchBuildings = () => {
-        // put  component in loading state and clear error, if exists
+    getUserLocation = (callback) => {
         this.setState({ loading: true, error: "" })
-
-        axios.get('/api/building/location')
+        
+        Utils.getPosition().then((position) => {
+            const { latitude, longitude } = position.coords;
+            this.setState({
+                userLocation: { lat: latitude, lng: longitude }
+            });
+            callback();
+        }).catch(() => callback())
+    }
+    fetchBuildings = () => {
+        const { lat, lng } = this.state.userLocation;
+        
+        axios.get('/api/building/location', { params: { lat: lat, lng: lng } })
             .then(response => {
                 this.setState({ buildings: response.data, loading: false, error: '' });
             })
-            .catch(function (error) {
+            .catch(error => {
                 this.setState({ buildings: [], loading: false, error: error })
             })
     }
