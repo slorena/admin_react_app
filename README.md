@@ -8,6 +8,20 @@ module.exports = {
 };
 ```
 
+Make sure to add your own `API_KEY` from your Google Maps Account in `./client/public/index.html`
+```html
+ <script
+    src="https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places"></script>
+  ```  
+ and in "./client/src/components/map/MapComponent.js"
+ ```javascript
+  <GoogleMapReact
+      apiKey="API_KEY"
+      center={userLocation}
+      zoom={3}
+  >
+ ```
+
 ## Quick Start
 
 ```javascript
